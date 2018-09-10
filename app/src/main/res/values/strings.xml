@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">LaboratoryWork</string>
+    <string name="say_hello">Hello, %1$s</string>
+</resources>
