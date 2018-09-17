@@ -1,10 +1,10 @@
 package iot.nulp.com.laboratorywork.screens;
 
-import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
-import android.speech.tts.TextToSpeech;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
+import android.telephony.PhoneNumberUtils;
 import android.text.TextUtils;
 import android.util.Log;
 import android.util.Patterns;
@@ -20,6 +20,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import iot.nulp.com.laboratorywork.R;
+import iot.nulp.com.laboratorywork.screens.Prefs.User;
+import iot.nulp.com.laboratorywork.screens.Prefs.UserPref;
 
 
 public class ThreeLabActivity extends AppCompatActivity {
@@ -32,8 +34,10 @@ public class ThreeLabActivity extends AppCompatActivity {
 
    private TextView mErrorsTextView;
 
-   private Button mSubmit;
-   List<String> errorsList = new ArrayList<>();
+   Button mSubmit;
+   Button mViewList;
+
+   User mUser;
 
     
     @Override
@@ -48,33 +52,53 @@ public class ThreeLabActivity extends AppCompatActivity {
         mPasswordConfirmedEditText = findViewById(R.id.edit_text_confirmation);
         mErrorsTextView = findViewById(R.id.text_view_errors);
         mSubmit = findViewById(R.id.button_submit);
+        mViewList = findViewById(R.id.button_view_list);
 
         mSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mErrorsTextView.setText("");
-                if (validateFields()){
-                    mErrorsTextView.setVisibility(View.GONE);
-                    showToast("Everything is ok");
-                }
-                else {
-                    for(int counter = 0; counter < errorsList.size(); counter++){
-                        mErrorsTextView.append(errorsList.get(counter));
-                        mErrorsTextView.append("\n");
-                        Log.e("ERROR", errorsList.get(counter));
-                    }
-                    errorsList.clear();
-                }
+               doSubmit();
+            }
+        });
+        mViewList.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ThreeLabActivity.this, FourthLabActivity.class);
+                startActivity(intent);
             }
         });
 
     }
 
+    private void doSubmit() {
+        validateFields();
+        mErrorsTextView.setText("");
+        if(validateFields()){
+            mUser = new User.Builder()
+                    .setName(getName())
+                    .setSurname(getLastName())
+                    .setPhone(getPhone())
+                    .build();
+            Log.i("USER_INFO", mUser.toString());
+            UserPref.get(ThreeLabActivity.this).putUser(mUser);
+            showToast("You added user to Preferences");
+        }
+        else{
+            showToast("Error");
+        }
+    }
+
     private boolean validateFields() {
-        return validateName(getName(), getLastName()) &
-                validateEmail(getEmail()) &
-                validatePassword(getPassword(), getPasswordConfirmation()) &
-                validatePhone(getPhone());
+        validEmail(getEmail());
+        validName(getName(), getLastName());
+        validPassword(getPassword(), getPasswordConfirmation());
+        validPhone(getPhone());
+        return  mFirstNameEditText.getError() == null &
+                mLastNameEditText.getError() == null &
+                mPhoneEditText.getError() == null &
+                mPasswordEdittext.getError() == null &
+                mPasswordConfirmedEditText.getError() == null &
+                mEmailEditText.getError() == null;
 
     }
 
@@ -108,50 +132,43 @@ public class ThreeLabActivity extends AppCompatActivity {
         return mLastNameEditText.getText().toString().trim();
     }
 
-    private boolean validatePhone(String phoneNumber) {
-        String regexStr = "/\\(?([0-9]{3})\\)?([ .-]?)([0-9]{3})\\2([0-9]{4})/";
-        if(phoneNumber.matches(regexStr) && !TextUtils.isEmpty(phoneNumber)) {
-            return true;
+    private void validPhone(String phoneNumber) {
+        if(PhoneNumberUtils.isGlobalPhoneNumber(phoneNumber) && !TextUtils.isEmpty(phoneNumber)) {
+            mPhoneEditText.setError(null);
         }
         else {
-            setError("Number is incorrect");
-            return false;
+            mPhoneEditText.setError("Number is incorrect");
         }
     }
 
-    private boolean validatePassword(String password, String passwordConfirmation) {
-        //Якщо поле для паролю пусте
+    private void validPassword(String password, String passwordConfirmation) {
         if(!TextUtils.isEmpty(password) && password.equals(passwordConfirmation)){
-            return true;
+                mPasswordEdittext.setError(null);
         }
         else{
-            setError("Passwords are not equals or empty");
-            return false;
+            mPasswordEdittext.setError("Passwords are not equals or empty");
         }
     }
 
-    private boolean validateEmail(String email){
-        //Якщо імейл відповідає шаблону для імейлів
+    private void validEmail(String email){
         if(Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-            return true;
+                mEmailEditText.setError(null);
         }
         else{
-            setError("Email is incorrect");
-            return false;
+            mEmailEditText.setError("Email is incorrect");
         }
     }
 
-    private boolean validateName(String name, String fullName) {
+    private void validName(String name, String fullName) {
         String regex = "^[\\p{L} .'-]+$";
         Pattern pattern = Pattern.compile(regex,Pattern.CASE_INSENSITIVE);
         Matcher matcherName = pattern.matcher(name);
         Matcher matcherLastName = pattern.matcher(fullName);
-        if(matcherName.find() && matcherLastName.find()){
-            return true;
+        if(matcherName.find() & matcherLastName.find()){
+            mFirstNameEditText.setError(null);
         }
         else{
-            setError("Name is incorrect");
-            return false;
+            mFirstNameEditText.setError("Name or Full name is incorrect");
         }
     }
 
@@ -159,9 +176,4 @@ public class ThreeLabActivity extends AppCompatActivity {
         Toast.makeText(ThreeLabActivity.this, message, Toast.LENGTH_LONG).show();
     }
 
-    private void setError(String errorMessage) {
-        mErrorsTextView.setVisibility(View.VISIBLE);
-        errorsList.add(errorMessage);
-
-    }
 }
