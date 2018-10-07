@@ -19,6 +19,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import iot.nulp.com.laboratorywork.R;
+import retrofit2.http.HEAD;
 
 import android.content.SharedPreferences.Editor;
 
@@ -36,7 +37,11 @@ public class ThreeLabActivity extends AppCompatActivity {
     Button mSubmit;
     Button mViewList;
 
+<<<<<<< HEAD
 
+=======
+    
+>>>>>>> 0855e4e... [^] implement lab 5,6
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -70,6 +75,7 @@ public class ThreeLabActivity extends AppCompatActivity {
     private void doSubmit() {
         validateFields();
         mErrorsTextView.setText("");
+<<<<<<<HEAD
         if (validateFields()) {
             SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
             String myStrValue = prefs.getString("NAME", "");
@@ -81,6 +87,20 @@ public class ThreeLabActivity extends AppCompatActivity {
             prefEditor.putString("PHONE", myPhoneValue + "/" + getPhone());
             prefEditor.apply();
         } else {
+=======
+        if(validateFields()){
+            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+            String myStrValue = prefs.getString("NAME", "");
+            Editor prefEditor = PreferenceManager.getDefaultSharedPreferences(this).edit();
+            prefEditor.putString("NAME", myStrValue+"/"+getName());
+            String mySurnameValue = prefs.getString("SURNAME", "");
+            prefEditor.putString("SURNAME", mySurnameValue+"/"+getLastName());
+            String myPhoneValue = prefs.getString("PHONE", "");
+            prefEditor.putString("PHONE", myPhoneValue+"/"+getPhone());
+            prefEditor.apply();
+        }
+        else{
+>>>>>>> 0855e4e... [^] implement lab 5,6
             showToast("Error");
         }
     }
@@ -160,7 +180,11 @@ public class ThreeLabActivity extends AppCompatActivity {
         Matcher matcherLastName = pattern.matcher(fullName);
         if (matcherName.find() & matcherLastName.find()) {
             mFirstNameEditText.setError(null);
+<<<<<<< HEAD
         } else {
+=======
+        } else{
+>>>>>>> 0855e4e... [^] implement lab 5,6
             mFirstNameEditText.setError("Name or Full name is incorrect");
         }
     }
