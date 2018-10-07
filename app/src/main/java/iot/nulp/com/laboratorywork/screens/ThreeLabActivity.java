@@ -1,12 +1,13 @@
 package iot.nulp.com.laboratorywork.screens;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.telephony.PhoneNumberUtils;
 import android.text.TextUtils;
-import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
@@ -14,14 +15,12 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import iot.nulp.com.laboratorywork.R;
-import iot.nulp.com.laboratorywork.screens.Prefs.User;
-import iot.nulp.com.laboratorywork.screens.Prefs.UserPref;
+
+import android.content.SharedPreferences.Editor;
 
 
 public class ThreeLabActivity extends AppCompatActivity {
@@ -36,8 +35,6 @@ public class ThreeLabActivity extends AppCompatActivity {
 
    Button mSubmit;
    Button mViewList;
-
-   User mUser;
 
     
     @Override
@@ -74,14 +71,15 @@ public class ThreeLabActivity extends AppCompatActivity {
         validateFields();
         mErrorsTextView.setText("");
         if(validateFields()){
-            mUser = new User.Builder()
-                    .setName(getName())
-                    .setSurname(getLastName())
-                    .setPhone(getPhone())
-                    .build();
-            Log.i("USER_INFO", mUser.toString());
-            UserPref.get(ThreeLabActivity.this).putUser(mUser);
-            showToast("You added user to Preferences");
+            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+            String myStrValue = prefs.getString("NAME", "");
+            Editor prefEditor = PreferenceManager.getDefaultSharedPreferences(this).edit();
+            prefEditor.putString("NAME", myStrValue+"/"+getName());
+            String mySurnameValue = prefs.getString("SURNAME", "");
+            prefEditor.putString("SURNAME", mySurnameValue+"/"+getLastName());
+            String myPhoneValue = prefs.getString("PHONE", "");
+            prefEditor.putString("PHONE", myPhoneValue+"/"+getPhone());
+            prefEditor.apply();
         }
         else{
             showToast("Error");
@@ -166,8 +164,7 @@ public class ThreeLabActivity extends AppCompatActivity {
         Matcher matcherLastName = pattern.matcher(fullName);
         if(matcherName.find() & matcherLastName.find()){
             mFirstNameEditText.setError(null);
-        }
-        else{
+        } else{
             mFirstNameEditText.setError("Name or Full name is incorrect");
         }
     }
