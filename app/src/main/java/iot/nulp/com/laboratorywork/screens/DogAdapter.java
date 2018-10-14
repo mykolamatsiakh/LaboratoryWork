@@ -49,9 +49,9 @@ public class DogAdapter extends RecyclerView.Adapter<DogAdapter.ViewHolder> {
     }
 
 
-
-    public class ViewHolder extends RecyclerView.ViewHolder{
+    public class ViewHolder extends RecyclerView.ViewHolder {
         ImageView img_android;
+
         public ViewHolder(View view) {
             super(view);
 

@@ -13,4 +13,6 @@
     <string name="submit">Submit</string>
     <string name="view_list">View list</string>
     <string name="contacts">Контакти</string>
+
+    <string name="there_is_no_internet">There is no internet connection</string>
 </resources>

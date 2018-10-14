@@ -14,7 +14,6 @@ public class MainActivity extends AppCompatActivity {
 
     EditText mEditText;
     Button mButtonNotify;
-//    Button mButtonClear;
     TextView mTextViewSetInput;
     Button mButtonLabThree;
 
@@ -24,7 +23,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         mEditText = findViewById(R.id.user_input);
-//        mButtonClear = ;
         mButtonLabThree = findViewById(R.id.go_to_lab3);
         mTextViewSetInput = findViewById(R.id.user_text);
         mButtonNotify = findViewById(R.id.edit_text_notify);
@@ -46,9 +44,9 @@ public class MainActivity extends AppCompatActivity {
         mButtonLabThree.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent thirdLabActivity = new Intent(MainActivity.this,
-                        ThreeLabActivity.class);
-                startActivity(thirdLabActivity);
+                Intent fourthLabActivity = new Intent(MainActivity.this,
+                        FourthLabActivity.class);
+                startActivity(fourthLabActivity);
             }
         });
 
