@@ -24,7 +24,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         mEditText = findViewById(R.id.user_input);
-//        mButtonClear = ;
         mButtonLabThree = findViewById(R.id.go_to_lab3);
         mTextViewSetInput = findViewById(R.id.user_text);
         mButtonNotify = findViewById(R.id.edit_text_notify);
