@@ -44,20 +44,17 @@ public class FourthLabActivity extends AppCompatActivity{
         recyclerView.setLayoutManager(layoutManager);
         getRetrofitImage();
         swipeLayout = findViewById(R.id.swipe_container);
-        // Adding Listener
         swipeLayout.setOnRefreshListener(new OnRefreshListener() {
             @Override
             public void onRefresh() {
                 new Handler().postDelayed(new Runnable() {
                     @Override public void run() {
-                        // Stop animation (This will be after 3 seconds)
                         swipeLayout.setRefreshing(false);
                     }
                 }, 4000); // Delay in millis
             }
         });
 
-        // Scheme colors for animation
         swipeLayout.setColorSchemeColors(
                 getResources().getColor(android.R.color.holo_blue_bright),
                 getResources().getColor(android.R.color.holo_green_light),
