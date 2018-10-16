@@ -14,7 +14,7 @@ public class MainActivity extends AppCompatActivity {
 
     EditText mEditText;
     Button mButtonNotify;
-    Button mButtonClear;
+//    Button mButtonClear;
     TextView mTextViewSetInput;
     Button mButtonLabThree;
 
@@ -22,12 +22,13 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         mEditText = findViewById(R.id.user_input);
-        mButtonClear = findViewById(R.id.edit_text_clear);
         mButtonLabThree = findViewById(R.id.go_to_lab3);
         mTextViewSetInput = findViewById(R.id.user_text);
         mButtonNotify = findViewById(R.id.edit_text_notify);
-        mButtonClear.setOnClickListener(new View.OnClickListener() {
+
+        findViewById(R.id.edit_text_clear).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 mEditText.setText("");
