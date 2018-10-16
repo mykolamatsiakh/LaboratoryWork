@@ -30,6 +30,7 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class FourthLabActivity extends AppCompatActivity {
+
     private static final String BASE_URL = "https://dog.ceo/api/";
     ArrayList<Dog> dogsImages = new ArrayList<>();
     @BindView(R.id.users)
