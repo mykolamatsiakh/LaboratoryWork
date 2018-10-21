@@ -1,4 +1,4 @@
-package iot.nulp.com.laboratorywork.screens;
+package laboratorywork.screens;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -60,7 +60,7 @@ public class ThreeLabActivity extends AppCompatActivity {
         mViewList.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(ThreeLabActivity.this, FourthLabActivity.class);
+                Intent intent = new Intent(ThreeLabActivity.this, DogsActivity.class);
                 startActivity(intent);
             }
         });
