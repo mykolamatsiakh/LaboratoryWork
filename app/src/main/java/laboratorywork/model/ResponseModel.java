@@ -1,15 +1,13 @@
 package laboratorywork.model;
 
-import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import java.util.List;
 
 public class ResponseModel {
         @SerializedName("status")
-        @Expose
         private String status;
+
         @SerializedName("message")
-        @Expose
         private List<String> message = null;
 
         public String getStatus() {

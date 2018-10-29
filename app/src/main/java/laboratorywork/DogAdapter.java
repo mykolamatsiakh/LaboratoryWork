@@ -19,7 +19,6 @@ import laboratorywork.model.Dog;
 
 public class DogAdapter extends RecyclerView.Adapter<DogAdapter.ViewHolder> {
     private List<Dog> dogsURLs;
-    private Context context;
 
     public interface OnItemClickListener {
         void onItemClick(Dog dogsURL, View view);
@@ -28,7 +27,6 @@ public class DogAdapter extends RecyclerView.Adapter<DogAdapter.ViewHolder> {
     OnItemClickListener mOnItemClickListener;
 
     public DogAdapter(Context context, List<Dog> dogsURLs) {
-        this.context = context;
         this.dogsURLs = dogsURLs;
     }
 
@@ -39,7 +37,7 @@ public class DogAdapter extends RecyclerView.Adapter<DogAdapter.ViewHolder> {
     @Override
     public DogAdapter.ViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
         View view = LayoutInflater.from(viewGroup.getContext()).
-                inflate(R.layout.activity_list_view,
+                inflate(R.layout.activity_list_item,
                         viewGroup, false);
         return new ViewHolder(view);
     }
@@ -57,7 +55,6 @@ public class DogAdapter extends RecyclerView.Adapter<DogAdapter.ViewHolder> {
     }
 
     public void clear() {
-        // TODO Auto-generated method stub
         dogsURLs.clear();
 
     }
