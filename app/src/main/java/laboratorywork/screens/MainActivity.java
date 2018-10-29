@@ -1,4 +1,4 @@
-package iot.nulp.com.laboratorywork.screens;
+package laboratorywork.screens;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
@@ -12,11 +12,8 @@ import iot.nulp.com.laboratorywork.R;
 
 public class MainActivity extends AppCompatActivity {
 
-    EditText mEditText;
-    Button mButtonNotify;
-//    Button mButtonClear;
-    TextView mTextViewSetInput;
-    Button mButtonLabThree;
+    private EditText mEditText;
+    private TextView mTextViewSetInput;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,9 +21,9 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         mEditText = findViewById(R.id.user_input);
-        mButtonLabThree = findViewById(R.id.go_to_lab3);
+        Button mButtonLabThree = findViewById(R.id.go_to_lab3);
         mTextViewSetInput = findViewById(R.id.user_text);
-        mButtonNotify = findViewById(R.id.edit_text_notify);
+        Button mButtonNotify = findViewById(R.id.edit_text_notify);
 
         findViewById(R.id.edit_text_clear).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -45,9 +42,9 @@ public class MainActivity extends AppCompatActivity {
         mButtonLabThree.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent thirdLabActivity = new Intent(MainActivity.this,
-                        ThreeLabActivity.class);
-                startActivity(thirdLabActivity);
+                Intent dogActivity = new Intent(MainActivity.this,
+                        DogsActivity.class);
+                startActivity(dogActivity);
             }
         });
 
