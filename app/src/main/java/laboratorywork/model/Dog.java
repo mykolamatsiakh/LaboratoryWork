@@ -2,12 +2,12 @@ package laboratorywork.model;
 
 
 public class Dog {
-    private static int counter = 0;
+    private static int mCounter = 0;
     private String mImageUrl;
 
     public Dog(String imageURL) {
         this.mImageUrl = imageURL;
-        counter++;
+        mCounter++;
     }
 
     public String getImageUrl() {
@@ -16,7 +16,7 @@ public class Dog {
 
 
     public static int getCounter() {
-        return counter;
+        return mCounter;
     }
 
 

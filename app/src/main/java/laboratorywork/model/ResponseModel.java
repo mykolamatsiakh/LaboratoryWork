@@ -6,24 +6,24 @@ import java.util.List;
 
 public class ResponseModel {
     @SerializedName("status")
-    private String status;
+    private String mStatus;
 
     @SerializedName("message")
-    private List<String> message = null;
+    private List<String> mMessage = null;
 
     public String getStatus() {
-        return status;
+        return mStatus;
     }
 
     public void setStatus(String status) {
-        this.status = status;
+        this.mStatus = status;
     }
 
     public List<String> getMessage() {
-        return message;
+        return mMessage;
     }
 
     public void setMessage(List<String> message) {
-        this.message = message;
+        this.mMessage = message;
     }
 }

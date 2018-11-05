@@ -11,15 +11,14 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Pattern;
 
 import android.os.Handler;
 import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
 import butterknife.BindColor;
 import butterknife.BindView;
@@ -35,24 +34,25 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class DogsActivity extends AppCompatActivity {
-    List<Dog> dogsImagesURL = new ArrayList<>();
-    Call<ResponseModel> callToRetrofit;
+    List<Dog> mDogsImagesUrl = new ArrayList<>();
+    Call<ResponseModel> mCallToRetrofit;
     DogAdapter mDogAdapter;
+    private static final String EXTRA_IMAGE_PATH = "IMAGE_PATH";
 
-    @BindView(R.id.dogs_toolbar)
+    @BindView(R.id.toolbar_dogs)
     Toolbar mToolbar;
-    @BindView(R.id.users)
+    @BindView(R.id.recycler_view_users)
     protected RecyclerView mRecyclerView;
     @BindView(R.id.swipe_container)
     SwipeRefreshLayout mSwipeLayout;
     @BindColor(R.color.colorAccent)
-    int blue_bright;
+    int mBlueBright;
     @BindColor(R.color.colorGreen)
-    int green_light;
+    int mGreenLight;
     @BindColor(R.color.colorGrey)
-    int orange_light;
+    int mOrangeLight;
     @BindColor(R.color.colorPrimary)
-    int red_light;
+    int mRedLight;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,7 +84,7 @@ public class DogsActivity extends AppCompatActivity {
 
     private void startImageViewerActivity(View view) {
         Intent startIntent = ImageViewerActivity.getStartIntent(DogsActivity.this,
-                dogsImagesURL.get(mRecyclerView.getLayoutManager().getPosition(view)).
+                mDogsImagesUrl.get(mRecyclerView.getLayoutManager().getPosition(view)).
                         getImageUrl());
         ActivityOptionsCompat activityOptionsCompat = ActivityOptionsCompat
                 .makeSceneTransitionAnimation(DogsActivity.this, view,
@@ -102,49 +102,53 @@ public class DogsActivity extends AppCompatActivity {
                         mSwipeLayout.setRefreshing(false);
                         getRetrofitImage();
                     }
-                }, 4000);
+                }, 4_000);
             }
         });
 
         mSwipeLayout.setColorSchemeColors(
-                blue_bright,
-                green_light,
-                orange_light,
-                red_light
+                mBlueBright,
+                mGreenLight,
+                mOrangeLight,
+                mRedLight
         );
     }
 
     private void replaceOldListWithNewList() {
-        dogsImagesURL.clear();
+        mDogsImagesUrl.clear();
         ArrayList<Dog> dogsFavourites = new ArrayList<>();
         SharedPreferences prefs = PreferenceManager.
                 getDefaultSharedPreferences(DogsActivity.this);
-        String imagePath = prefs.getString("IMAGE_PATH", "");
+        String imagePath = prefs.getString(EXTRA_IMAGE_PATH, "");
         String finalString = imagePath.substring(1, imagePath.length());
         String[] paths = finalString.split(Pattern.quote("&"));
         for (String path : paths) {
             Dog favouriteDog = new Dog(path);
             dogsFavourites.add(favouriteDog);
         }
-        dogsImagesURL.addAll(dogsFavourites);
+        mDogsImagesUrl.addAll(dogsFavourites);
         mDogAdapter.notifyDataSetChanged();
     }
 
     void getRetrofitImage() {
         RetrofitImageApi retrofitImageApi = RetrofitSingleton.getInstance().getUserService();
-        callToRetrofit = retrofitImageApi.getImages();
-        callToRetrofit.enqueue(new Callback<ResponseModel>() {
+        mCallToRetrofit = retrofitImageApi.getImages();
+        mCallToRetrofit.enqueue(new Callback<ResponseModel>() {
             @Override
             public void onResponse(Call<ResponseModel> call, Response<ResponseModel> response) {
                 if (response.isSuccessful()) {
                     for (int counter = 0; counter < response.body().getMessage().size(); counter++) {
                         Dog dog = new Dog(response.body().getMessage().get(counter));
-                        dogsImagesURL.add(dog);
+                        mDogsImagesUrl.add(dog);
                     }
-                    mDogAdapter = new DogAdapter(getApplicationContext(), dogsImagesURL);
+                    mDogAdapter = new DogAdapter(mDogsImagesUrl);
                     mRecyclerView.setAdapter(mDogAdapter);
                     mDogAdapter.setOnItemClickListener(mOnItemClickListener);
 
+                }
+                else{
+                    Toast.makeText(DogsActivity.this,"Something went wrong",
+                            Toast.LENGTH_SHORT).show();
                 }
             }
 

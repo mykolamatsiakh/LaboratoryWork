@@ -17,8 +17,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="laboratorywork.screens.ThreeLabActivity"
-            android:screenOrientation="portrait"/>
 
         <activity android:name="laboratorywork.screens.DogsActivity"
             android:screenOrientation="portrait"/>

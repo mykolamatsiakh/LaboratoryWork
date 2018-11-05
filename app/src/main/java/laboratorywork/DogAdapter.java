@@ -1,6 +1,5 @@
 package laboratorywork;
 
-import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -19,22 +18,23 @@ import laboratorywork.model.Dog;
 
 
 public class DogAdapter extends RecyclerView.Adapter<DogAdapter.ViewHolder> {
-    private List<Dog> dogsURLs;
+    private List<Dog> mDogsUrls;
+    private OnItemClickListener mOnItemClickListener;
 
     public interface OnItemClickListener {
         void onItemClick(Dog dogsURL, View view);
     }
 
-    private OnItemClickListener mOnItemClickListener;
 
-    public DogAdapter(Context applicationContext, List<Dog> dogsURLs) {
-        this.dogsURLs = dogsURLs;
+    public DogAdapter(List<Dog> dogsURLs) {
+        this.mDogsUrls = dogsURLs;
     }
 
     public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
         mOnItemClickListener = onItemClickListener;
     }
 
+    @NonNull
     @Override
     public DogAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         View view = LayoutInflater.from(viewGroup.getContext()).
@@ -45,9 +45,9 @@ public class DogAdapter extends RecyclerView.Adapter<DogAdapter.ViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, int i) {
-        Picasso.with(viewHolder.img_android.getContext()).
-                load(dogsURLs.get(i).getImageUrl())
-                .into(viewHolder.img_android);
+        Picasso.with(viewHolder.mDogImage.getContext()).
+                load(mDogsUrls.get(i).getImageUrl())
+                .into(viewHolder.mDogImage);
     }
 
     @Override
@@ -56,14 +56,14 @@ public class DogAdapter extends RecyclerView.Adapter<DogAdapter.ViewHolder> {
     }
 
     public void clear() {
-        dogsURLs.clear();
+        mDogsUrls.clear();
 
     }
 
 
     class ViewHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.dog_image)
-        ImageView img_android;
+        ImageView mDogImage;
         Dog dog;
 
         ViewHolder(View view) {

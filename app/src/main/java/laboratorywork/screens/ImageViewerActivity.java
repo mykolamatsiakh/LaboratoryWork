@@ -48,24 +48,26 @@ public class ImageViewerActivity extends AppCompatActivity{
         mAddToFavouriteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String path = getIntent().getStringExtra(EXTRA_IMAGE_PATH);
-                SharedPreferences prefs = PreferenceManager.
-                        getDefaultSharedPreferences(ImageViewerActivity.this);
-                String imagePath = prefs.getString("IMAGE_PATH", "");
-
-                Editor prefEditor = PreferenceManager.
-                        getDefaultSharedPreferences(ImageViewerActivity.this).edit();
-                prefEditor.putString("IMAGE_PATH", imagePath+"&"+ path);
-                prefEditor.apply();
+              addImagePathToPreferences();
             }
         });
         ActivityCompat.postponeEnterTransition(ImageViewerActivity.this);
+        loadImage(getIntent().getStringExtra(EXTRA_IMAGE_PATH));
+    }
+
+    private void addImagePathToPreferences() {
         String path = getIntent().getStringExtra(EXTRA_IMAGE_PATH);
-        loadImage(path);
+        SharedPreferences prefs = PreferenceManager.
+                getDefaultSharedPreferences(ImageViewerActivity.this);
+        String imagePath = prefs.getString(EXTRA_IMAGE_PATH, "");
+
+        Editor prefEditor = PreferenceManager.
+                getDefaultSharedPreferences(ImageViewerActivity.this).edit();
+        prefEditor.putString(EXTRA_IMAGE_PATH, imagePath+"&"+ path);
+        prefEditor.apply();
     }
 
     private void loadImage(String path) {
-
         Picasso.with(mTouchImageView.getContext())
                 .load(path)
                 .into(mTouchImageView, new Callback() {
