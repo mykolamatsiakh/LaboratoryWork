@@ -1,6 +1,7 @@
 package laboratorywork;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,9 +25,9 @@ public class DogAdapter extends RecyclerView.Adapter<DogAdapter.ViewHolder> {
         void onItemClick(Dog dogsURL, View view);
     }
 
-    OnItemClickListener mOnItemClickListener;
+    private OnItemClickListener mOnItemClickListener;
 
-    public DogAdapter(Context context, List<Dog> dogsURLs) {
+    public DogAdapter(Context applicationContext, List<Dog> dogsURLs) {
         this.dogsURLs = dogsURLs;
     }
 
@@ -35,7 +36,7 @@ public class DogAdapter extends RecyclerView.Adapter<DogAdapter.ViewHolder> {
     }
 
     @Override
-    public DogAdapter.ViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
+    public DogAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         View view = LayoutInflater.from(viewGroup.getContext()).
                 inflate(R.layout.activity_list_item,
                         viewGroup, false);
@@ -43,7 +44,7 @@ public class DogAdapter extends RecyclerView.Adapter<DogAdapter.ViewHolder> {
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder viewHolder, int i) {
+    public void onBindViewHolder(@NonNull ViewHolder viewHolder, int i) {
         Picasso.with(viewHolder.img_android.getContext()).
                 load(dogsURLs.get(i).getImageUrl())
                 .into(viewHolder.img_android);
@@ -60,24 +61,25 @@ public class DogAdapter extends RecyclerView.Adapter<DogAdapter.ViewHolder> {
     }
 
 
-
-   class ViewHolder extends RecyclerView.ViewHolder {
+    class ViewHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.dog_image)
         ImageView img_android;
-        private Dog dog;
+        Dog dog;
 
         ViewHolder(View view) {
             super(view);
             view.setOnClickListener(mOnClickListener);
             ButterKnife.bind(this, view);
         }
-       final View.OnClickListener mOnClickListener
-               = new View.OnClickListener() {
-           @Override
-           public void onClick(View view) {
-               if (mOnItemClickListener != null) mOnItemClickListener.onItemClick(dog, view);
-           }
-       };
+
+        final View.OnClickListener mOnClickListener
+                = new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                if (mOnItemClickListener != null) mOnItemClickListener.onItemClick(dog, view);
+            }
+        };
     }
 }
 

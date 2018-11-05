@@ -34,7 +34,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class DogsActivity extends AppCompatActivity{
+public class DogsActivity extends AppCompatActivity {
     List<Dog> dogsImagesURL = new ArrayList<>();
     Call<ResponseModel> callToRetrofit;
     DogAdapter mDogAdapter;
@@ -72,24 +72,27 @@ public class DogsActivity extends AppCompatActivity{
         });
 
 
-
     }
 
     final DogAdapter.OnItemClickListener mOnItemClickListener =
             new DogAdapter.OnItemClickListener() {
                 @Override
                 public void onItemClick(Dog dog, View view) {
-                    Intent startIntent = ImageViewerActivity.getStartIntent(DogsActivity.this,
-                            dogsImagesURL.get(mRecyclerView.getLayoutManager().getPosition(view)).
-                                    getImageUrl());
-                    ActivityOptionsCompat activityOptionsCompat = ActivityOptionsCompat
-                            .makeSceneTransitionAnimation(DogsActivity.this, view,
-                                    "transition");
-                    startActivity(startIntent, activityOptionsCompat.toBundle());
+                    startImageViewerActivity(view);
                 }
             };
 
-    void initView(){
+    private void startImageViewerActivity(View view) {
+        Intent startIntent = ImageViewerActivity.getStartIntent(DogsActivity.this,
+                dogsImagesURL.get(mRecyclerView.getLayoutManager().getPosition(view)).
+                        getImageUrl());
+        ActivityOptionsCompat activityOptionsCompat = ActivityOptionsCompat
+                .makeSceneTransitionAnimation(DogsActivity.this, view,
+                        "transition");
+        startActivity(startIntent, activityOptionsCompat.toBundle());
+    }
+
+    void initView() {
         mSwipeLayout.setOnRefreshListener(new OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -133,7 +136,7 @@ public class DogsActivity extends AppCompatActivity{
         callToRetrofit.enqueue(new Callback<ResponseModel>() {
             @Override
             public void onResponse(Call<ResponseModel> call, Response<ResponseModel> response) {
-                if(response.isSuccessful()) {
+                if (response.isSuccessful()) {
                     for (int counter = 0; counter < response.body().getMessage().size(); counter++) {
                         Dog dog = new Dog(response.body().getMessage().get(counter));
                         dogsImagesURL.add(dog);

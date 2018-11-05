@@ -8,8 +8,9 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
 import android.view.View;
+import android.support.v7.widget.AppCompatImageView;
 
-public class TouchImageView extends android.support.v7.widget.AppCompatImageView {
+public class TouchImageView extends AppCompatImageView {
 
     private static class Mode {
         static final int NONE = 0;
@@ -114,10 +115,6 @@ public class TouchImageView extends android.support.v7.widget.AppCompatImageView
                 return true; // indicate event was handled
             }
         });
-    }
-
-    public void setMaxZoom(float x) {
-        mMaxScale = x;
     }
 
     private class ScaleListener extends ScaleGestureDetector.SimpleOnScaleGestureListener {

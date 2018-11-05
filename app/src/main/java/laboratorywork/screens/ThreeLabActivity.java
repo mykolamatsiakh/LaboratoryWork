@@ -24,19 +24,19 @@ import android.content.SharedPreferences.Editor;
 
 
 public class ThreeLabActivity extends AppCompatActivity {
-   private EditText mEmailEditText;
-   private EditText mPasswordEdittext;
-   private EditText mPasswordConfirmedEditText;
-   private EditText mFirstNameEditText;
-   private EditText mLastNameEditText;
-   private EditText mPhoneEditText;
+    private EditText mEmailEditText;
+    private EditText mPasswordEdittext;
+    private EditText mPasswordConfirmedEditText;
+    private EditText mFirstNameEditText;
+    private EditText mLastNameEditText;
+    private EditText mPhoneEditText;
 
-   private TextView mErrorsTextView;
+    private TextView mErrorsTextView;
 
-   Button mSubmit;
-   Button mViewList;
+    Button mSubmit;
+    Button mViewList;
 
-    
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,7 +54,7 @@ public class ThreeLabActivity extends AppCompatActivity {
         mSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               doSubmit();
+                doSubmit();
             }
         });
         mViewList.setOnClickListener(new View.OnClickListener() {
@@ -70,19 +70,18 @@ public class ThreeLabActivity extends AppCompatActivity {
     private void doSubmit() {
         validateFields();
         mErrorsTextView.setText("");
-        if(validateFields()){
+        if (validateFields()) {
             SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
             String myStrValue = prefs.getString("NAME", "");
             Editor prefEditor = PreferenceManager.getDefaultSharedPreferences(this).edit();
-            prefEditor.putString("NAME", myStrValue+"/"+getName());
+            prefEditor.putString("NAME", myStrValue + "/" + getName());
             String mySurnameValue = prefs.getString("SURNAME", "");
-            prefEditor.putString("SURNAME", mySurnameValue+"/"+getLastName());
+            prefEditor.putString("SURNAME", mySurnameValue + "/" + getLastName());
             String myPhoneValue = prefs.getString("PHONE", "");
-            prefEditor.putString("PHONE", myPhoneValue+"/"+getPhone());
+            prefEditor.putString("PHONE", myPhoneValue + "/" + getPhone());
             prefEditor.apply();
-        }
-        else{
-            showToast("Error");
+        } else {
+            showToast();
         }
     }
 
@@ -91,7 +90,7 @@ public class ThreeLabActivity extends AppCompatActivity {
         validName(getName(), getLastName());
         validPassword(getPassword(), getPasswordConfirmation());
         validPhone(getPhone());
-        return  mFirstNameEditText.getError() == null &
+        return mFirstNameEditText.getError() == null &
                 mLastNameEditText.getError() == null &
                 mPhoneEditText.getError() == null &
                 mPasswordEdittext.getError() == null &
@@ -131,46 +130,43 @@ public class ThreeLabActivity extends AppCompatActivity {
     }
 
     private void validPhone(String phoneNumber) {
-        if(PhoneNumberUtils.isGlobalPhoneNumber(phoneNumber) && !TextUtils.isEmpty(phoneNumber)) {
+        if (PhoneNumberUtils.isGlobalPhoneNumber(phoneNumber) && !TextUtils.isEmpty(phoneNumber)) {
             mPhoneEditText.setError(null);
-        }
-        else {
+        } else {
             mPhoneEditText.setError("Number is incorrect");
         }
     }
 
     private void validPassword(String password, String passwordConfirmation) {
-        if(!TextUtils.isEmpty(password) && password.equals(passwordConfirmation)){
-                mPasswordEdittext.setError(null);
-        }
-        else{
+        if (!TextUtils.isEmpty(password) && password.equals(passwordConfirmation)) {
+            mPasswordEdittext.setError(null);
+        } else {
             mPasswordEdittext.setError("Passwords are not equals or empty");
         }
     }
 
-    private void validEmail(String email){
-        if(Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-                mEmailEditText.setError(null);
-        }
-        else{
+    private void validEmail(String email) {
+        if (Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+            mEmailEditText.setError(null);
+        } else {
             mEmailEditText.setError("Email is incorrect");
         }
     }
 
     private void validName(String name, String fullName) {
         String regex = "^[\\p{L} .'-]+$";
-        Pattern pattern = Pattern.compile(regex,Pattern.CASE_INSENSITIVE);
+        Pattern pattern = Pattern.compile(regex, Pattern.CASE_INSENSITIVE);
         Matcher matcherName = pattern.matcher(name);
         Matcher matcherLastName = pattern.matcher(fullName);
-        if(matcherName.find() & matcherLastName.find()){
+        if (matcherName.find() & matcherLastName.find()) {
             mFirstNameEditText.setError(null);
-        } else{
+        } else {
             mFirstNameEditText.setError("Name or Full name is incorrect");
         }
     }
 
-    private void showToast(String message){
-        Toast.makeText(ThreeLabActivity.this, message, Toast.LENGTH_LONG).show();
+    private void showToast() {
+        Toast.makeText(ThreeLabActivity.this, "Error", Toast.LENGTH_LONG).show();
     }
 
 }
