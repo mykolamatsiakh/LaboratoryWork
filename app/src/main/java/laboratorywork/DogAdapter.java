@@ -64,7 +64,7 @@ public class DogAdapter extends RecyclerView.Adapter<DogAdapter.ViewHolder> {
     class ViewHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.dog_image)
         ImageView mDogImage;
-        Dog dog;
+        Dog mDog;
 
         ViewHolder(View view) {
             super(view);
@@ -77,7 +77,7 @@ public class DogAdapter extends RecyclerView.Adapter<DogAdapter.ViewHolder> {
             @Override
             public void onClick(View view) {
 
-                if (mOnItemClickListener != null) mOnItemClickListener.onItemClick(dog, view);
+                if (mOnItemClickListener != null) mOnItemClickListener.onItemClick(mDog, view);
             }
         };
     }

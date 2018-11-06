@@ -1,5 +1,6 @@
 package laboratorywork.screens;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -54,6 +55,11 @@ public class DogsActivity extends AppCompatActivity {
     @BindColor(R.color.colorPrimary)
     int mRedLight;
 
+    public static Intent getStartIntent(Context context) {
+        Intent intent = new Intent(context, DogsActivity.class);
+        return intent;
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -73,6 +79,7 @@ public class DogsActivity extends AppCompatActivity {
 
 
     }
+
 
     final DogAdapter.OnItemClickListener mOnItemClickListener =
             new DogAdapter.OnItemClickListener() {
