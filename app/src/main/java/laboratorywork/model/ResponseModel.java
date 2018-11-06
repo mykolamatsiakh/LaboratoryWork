@@ -1,30 +1,29 @@
 package laboratorywork.model;
 
-import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+
 import java.util.List;
 
 public class ResponseModel {
-        @SerializedName("status")
-        @Expose
-        private String status;
-        @SerializedName("message")
-        @Expose
-        private List<String> message = null;
+    @SerializedName("status")
+    private String mStatus;
 
-        public String getStatus() {
-            return status;
-        }
+    @SerializedName("message")
+    private List<String> mMessage = null;
 
-        public void setStatus(String status) {
-            this.status = status;
-        }
+    public String getStatus() {
+        return mStatus;
+    }
 
-        public List<String> getMessage() {
-            return message;
-        }
+    public void setStatus(String status) {
+        this.mStatus = status;
+    }
 
-        public void setMessage(List<String> message) {
-            this.message = message;
-        }
+    public List<String> getMessage() {
+        return mMessage;
+    }
+
+    public void setMessage(List<String> message) {
+        this.mMessage = message;
+    }
 }

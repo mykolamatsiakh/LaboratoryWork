@@ -1,6 +1,6 @@
 package laboratorywork;
 
-import android.content.Context;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,7 +9,7 @@ import android.widget.ImageView;
 
 import com.squareup.picasso.Picasso;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -18,42 +18,68 @@ import laboratorywork.model.Dog;
 
 
 public class DogAdapter extends RecyclerView.Adapter<DogAdapter.ViewHolder> {
-    private ArrayList<Dog> dogsURLs;
-    private Context context;
+    private List<Dog> mDogsUrls;
+    private OnItemClickListener mOnItemClickListener;
 
-    public DogAdapter(Context context, ArrayList<Dog> dogsURLs) {
-        this.context = context;
-        this.dogsURLs = dogsURLs;
+    public interface OnItemClickListener {
+        void onItemClick(Dog dogsURL, View view);
     }
 
+
+    public DogAdapter(List<Dog> dogsURLs) {
+        this.mDogsUrls = dogsURLs;
+    }
+
+    public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
+        mOnItemClickListener = onItemClickListener;
+    }
+
+    @NonNull
     @Override
-    public DogAdapter.ViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
+    public DogAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         View view = LayoutInflater.from(viewGroup.getContext()).
-                inflate(R.layout.activity_list_view,
+                inflate(R.layout.activity_list_item,
                         viewGroup, false);
         return new ViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder viewHolder, int i) {
-        Picasso.with(viewHolder.img_android.getContext()).
-                load(dogsURLs.get(i).getImageUrl()).
-                into(viewHolder.img_android);
+    public void onBindViewHolder(@NonNull ViewHolder viewHolder, int i) {
+        Picasso.with(viewHolder.mDogImage.getContext()).
+                load(mDogsUrls.get(i).getImageUrl())
+                .into(viewHolder.mDogImage);
     }
 
     @Override
     public int getItemCount() {
-        return dogsURLs.size();
+        return Dog.getCounter();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public void clear() {
+        mDogsUrls.clear();
+
+    }
+
+
+    class ViewHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.dog_image)
-        ImageView img_android;
+        ImageView mDogImage;
+        Dog mDog;
 
         ViewHolder(View view) {
             super(view);
+            view.setOnClickListener(mOnClickListener);
             ButterKnife.bind(this, view);
         }
+
+        final View.OnClickListener mOnClickListener
+                = new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                if (mOnItemClickListener != null) mOnItemClickListener.onItemClick(mDog, view);
+            }
+        };
     }
 }
 

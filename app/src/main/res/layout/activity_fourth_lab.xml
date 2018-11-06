@@ -1,4 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar_dogs"
+        android:layout_width="match_parent"
+        android:layout_height="?android:attr/actionBarSize"
+        android:background="@color/colorPrimaryDark"
+        app:navigationIcon = "@drawable/ic_favorite_white_24dp"/>
+
+
+
 <android.support.v4.widget.SwipeRefreshLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/swipe_container"
@@ -7,12 +24,16 @@
     android:layout_height="match_parent"
     android:background="@color/colorGrey">
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/users"
-        android:layout_width="0dp"
-        android:layout_marginTop="20dp"
-        android:layout_height="0dp"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true" />
+
+<android.support.v7.widget.RecyclerView
+    android:id="@+id/recycler_view_users"
+    android:layout_width="0dp"
+    android:layout_marginTop="20dp"
+    android:layout_height="0dp"
+    android:layout_alignParentStart="true"
+    android:scrollbars="vertical"
+    android:layout_alignParentTop="true" />
+
 
 </android.support.v4.widget.SwipeRefreshLayout>
+</LinearLayout>

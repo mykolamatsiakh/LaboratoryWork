@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+<laboratorywork.view.TouchImageView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/image_view"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:transitionName="transition"/>
+
+    <Button
+        android:id="@+id/add_to_favourite"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_gravity="bottom"
+        android:background="@color/colorGreen"
+        android:textColor="@color/colorWhite"
+        android:text="@string/add_to_favourite"/>
+
+</FrameLayout>
