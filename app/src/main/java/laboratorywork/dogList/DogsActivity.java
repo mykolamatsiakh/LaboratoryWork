@@ -15,10 +15,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
 
-import android.os.Handler;
 import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -28,14 +26,7 @@ import butterknife.ButterKnife;
 import iot.nulp.com.laboratorywork.R;
 import laboratorywork.LaboratoryWorkApplication;
 import laboratorywork.preview.ImageViewerActivity;
-import laboratorywork.view.DogAdapter;
-import laboratorywork.model.ResponseModel;
-import laboratorywork.model.RetrofitImageApi;
-import laboratorywork.model.RetrofitSingleton;
 import laboratorywork.model.DogModel;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 public class DogsActivity extends AppCompatActivity implements DogListView  {
     private List<DogModel> mDogsImagesUrl = new ArrayList<>();
@@ -85,14 +76,14 @@ public class DogsActivity extends AppCompatActivity implements DogListView  {
             new DogAdapter.OnItemClickListener() {
                 @Override
                 public void onItemClick(DogModel dog, View view) {
-                   // startImageViewerActivity(view);
+                    startImageViewerActivity(view);
                 }
             };
 
 
     public void startImageViewerActivity(View view) {
         Intent startIntent = ImageViewerActivity.getStartIntent(DogsActivity.this,
-                "");
+                LaboratoryWorkApplication.getDogModel().getImageUrl());
         ActivityOptionsCompat activityOptionsCompat = ActivityOptionsCompat
                 .makeSceneTransitionAnimation(DogsActivity.this, view,
                         "transition");

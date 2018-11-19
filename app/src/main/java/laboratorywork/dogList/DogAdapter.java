@@ -1,4 +1,4 @@
-package laboratorywork.view;
+package laboratorywork.dogList;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -15,6 +15,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import iot.nulp.com.laboratorywork.R;
+import laboratorywork.LaboratoryWorkApplication;
 import laboratorywork.model.DogModel;
 
 
@@ -48,7 +49,7 @@ public class DogAdapter extends RecyclerView.Adapter<DogAdapter.ViewHolder> {
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder viewHolder, int i) {
+    public void onBindViewHolder(@NonNull ViewHolder viewHolder, final int i) {
         Picasso.with(viewHolder.mDogImage.getContext()).
                 load(mDogsUrls.get(i).getImageUrl())
                 .into(viewHolder.mDogImage);
@@ -56,7 +57,7 @@ public class DogAdapter extends RecyclerView.Adapter<DogAdapter.ViewHolder> {
         viewHolder.mDogImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                LaboratoryWorkApplication.setDogModel(mDogsUrls.get(i));
             }
         });
     }
