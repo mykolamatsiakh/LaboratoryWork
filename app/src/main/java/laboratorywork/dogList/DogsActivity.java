@@ -1,4 +1,4 @@
-package laboratorywork.screens;
+package laboratorywork.dogList;
 
 import android.content.Context;
 import android.content.Intent;
@@ -18,6 +18,7 @@ import java.util.regex.Pattern;
 import android.os.Handler;
 import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -25,20 +26,22 @@ import butterknife.BindColor;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import iot.nulp.com.laboratorywork.R;
-import laboratorywork.DogAdapter;
+import laboratorywork.LaboratoryWorkApplication;
+import laboratorywork.preview.ImageViewerActivity;
+import laboratorywork.view.DogAdapter;
 import laboratorywork.model.ResponseModel;
-import laboratorywork.api.RetrofitImageApi;
-import laboratorywork.api.RetrofitSingleton;
-import laboratorywork.model.Dog;
+import laboratorywork.model.RetrofitImageApi;
+import laboratorywork.model.RetrofitSingleton;
+import laboratorywork.model.DogModel;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class DogsActivity extends AppCompatActivity {
-    List<Dog> mDogsImagesUrl = new ArrayList<>();
-    Call<ResponseModel> mCallToRetrofit;
-    DogAdapter mDogAdapter;
-    private static final String EXTRA_IMAGE_PATH = "IMAGE_PATH";
+public class DogsActivity extends AppCompatActivity implements DogListView  {
+    private List<DogModel> mDogsImagesUrl = new ArrayList<>();
+    private DogAdapter mDogAdapter;
+
+    private DogListPresenter mDogListPresenter;
 
     @BindView(R.id.toolbar_dogs)
     Toolbar mToolbar;
@@ -65,11 +68,9 @@ public class DogsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_fourth_lab);
         ButterKnife.bind(this);
-        getRetrofitImage();
+        mDogListPresenter = new DogListPresenterI(this);
+        mDogListPresenter.getDogsFromServer(false);
         initView();
-        RecyclerView.LayoutManager layoutManager =
-                new LinearLayoutManager(getApplicationContext());
-        mRecyclerView.setLayoutManager(layoutManager);
         mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -80,36 +81,29 @@ public class DogsActivity extends AppCompatActivity {
 
     }
 
-
     final DogAdapter.OnItemClickListener mOnItemClickListener =
             new DogAdapter.OnItemClickListener() {
                 @Override
-                public void onItemClick(Dog dog, View view) {
-                    startImageViewerActivity(view);
+                public void onItemClick(DogModel dog, View view) {
+                   // startImageViewerActivity(view);
                 }
             };
 
-    private void startImageViewerActivity(View view) {
+
+    public void startImageViewerActivity(View view) {
         Intent startIntent = ImageViewerActivity.getStartIntent(DogsActivity.this,
-                mDogsImagesUrl.get(mRecyclerView.getLayoutManager().getPosition(view)).
-                        getImageUrl());
+                "");
         ActivityOptionsCompat activityOptionsCompat = ActivityOptionsCompat
                 .makeSceneTransitionAnimation(DogsActivity.this, view,
                         "transition");
         startActivity(startIntent, activityOptionsCompat.toBundle());
     }
 
-    void initView() {
+    public void initView() {
         mSwipeLayout.setOnRefreshListener(new OnRefreshListener() {
             @Override
             public void onRefresh() {
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        mSwipeLayout.setRefreshing(false);
-                        getRetrofitImage();
-                    }
-                }, 4_000);
+                mDogListPresenter.getDogsFromServer(true);
             }
         });
 
@@ -121,50 +115,38 @@ public class DogsActivity extends AppCompatActivity {
         );
     }
 
-    private void replaceOldListWithNewList() {
+    public void replaceOldListWithNewList() {
         mDogsImagesUrl.clear();
-        ArrayList<Dog> dogsFavourites = new ArrayList<>();
+        ArrayList<DogModel> dogsFavourites = new ArrayList<>();
         SharedPreferences prefs = PreferenceManager.
                 getDefaultSharedPreferences(DogsActivity.this);
-        String imagePath = prefs.getString(EXTRA_IMAGE_PATH, "");
+        String imagePath = prefs.getString(LaboratoryWorkApplication.getExtraImagePath(), "");
         String finalString = imagePath.substring(1, imagePath.length());
         String[] paths = finalString.split(Pattern.quote("&"));
         for (String path : paths) {
-            Dog favouriteDog = new Dog(path);
+            DogModel favouriteDog = new DogModel(path);
             dogsFavourites.add(favouriteDog);
         }
-        mDogsImagesUrl.addAll(dogsFavourites);
-        mDogAdapter.notifyDataSetChanged();
     }
 
-    void getRetrofitImage() {
-        RetrofitImageApi retrofitImageApi = RetrofitSingleton.getInstance().getUserService();
-        mCallToRetrofit = retrofitImageApi.getImages();
-        mCallToRetrofit.enqueue(new Callback<ResponseModel>() {
-            @Override
-            public void onResponse(Call<ResponseModel> call, Response<ResponseModel> response) {
-                if (response.isSuccessful()) {
-                    for (int counter = 0; counter < response.body().getMessage().size(); counter++) {
-                        Dog dog = new Dog(response.body().getMessage().get(counter));
-                        mDogsImagesUrl.add(dog);
-                    }
-                    mDogAdapter = new DogAdapter(mDogsImagesUrl);
-                    mRecyclerView.setAdapter(mDogAdapter);
-                    mDogAdapter.setOnItemClickListener(mOnItemClickListener);
+    @Override
+    public void setAdapterData(List<DogModel> dogimagesUrl) {
+        mDogAdapter = new DogAdapter(DogsActivity.this, dogimagesUrl);
+        mRecyclerView.setAdapter(mDogAdapter);
+        mDogAdapter.setOnItemClickListener(mOnItemClickListener);
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+    }
 
-                }
-                else{
-                    Toast.makeText(DogsActivity.this,"Something went wrong",
-                            Toast.LENGTH_SHORT).show();
-                }
-            }
+    @Override
+    public void refreshData(List<DogModel> dogimagesUrl) {
+        mDogAdapter.clear();
+        mDogAdapter.addAll(dogimagesUrl);
+        mSwipeLayout.setRefreshing(false);
+    }
 
-            @Override
-            public void onFailure(Call<ResponseModel> call, Throwable t) {
-                setContentView(R.layout.activity_no_data);
-            }
-        });
-
+    @Override
+    public void onFailureResponse(Throwable throwable) {
+        Toast.makeText(this, "Response failed", Toast.LENGTH_LONG).show();
     }
 
 }

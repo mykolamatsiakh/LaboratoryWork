@@ -11,14 +11,6 @@ public class ResponseModel {
     @SerializedName("message")
     private List<String> mMessage = null;
 
-    public String getStatus() {
-        return mStatus;
-    }
-
-    public void setStatus(String status) {
-        this.mStatus = status;
-    }
-
     public List<String> getMessage() {
         return mMessage;
     }

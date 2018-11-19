@@ -1,5 +1,6 @@
-package laboratorywork;
+package laboratorywork.view;
 
+import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -14,20 +15,23 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import iot.nulp.com.laboratorywork.R;
-import laboratorywork.model.Dog;
+import laboratorywork.model.DogModel;
 
 
 public class DogAdapter extends RecyclerView.Adapter<DogAdapter.ViewHolder> {
-    private List<Dog> mDogsUrls;
+    private List<DogModel> mDogsUrls;
     private OnItemClickListener mOnItemClickListener;
+    private Context mContext;
 
     public interface OnItemClickListener {
-        void onItemClick(Dog dogsURL, View view);
+        void onItemClick(DogModel dogsURL, View view);
     }
 
 
-    public DogAdapter(List<Dog> dogsURLs) {
+    public DogAdapter(Context context, List<DogModel> dogsURLs) {
         this.mDogsUrls = dogsURLs;
+        this.mContext = context;
+
     }
 
     public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
@@ -48,23 +52,34 @@ public class DogAdapter extends RecyclerView.Adapter<DogAdapter.ViewHolder> {
         Picasso.with(viewHolder.mDogImage.getContext()).
                 load(mDogsUrls.get(i).getImageUrl())
                 .into(viewHolder.mDogImage);
+
+        viewHolder.mDogImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
     }
 
     @Override
     public int getItemCount() {
-        return Dog.getCounter();
+        return DogModel.getCounter();
     }
 
     public void clear() {
         mDogsUrls.clear();
+        notifyDataSetChanged();
 
     }
 
+    public void addAll(List<DogModel> dogs){
+        mDogsUrls.addAll(dogs);
+    }
 
     class ViewHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.dog_image)
         ImageView mDogImage;
-        Dog mDog;
+        DogModel mDog;
 
         ViewHolder(View view) {
             super(view);
@@ -76,7 +91,6 @@ public class DogAdapter extends RecyclerView.Adapter<DogAdapter.ViewHolder> {
                 = new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 if (mOnItemClickListener != null) mOnItemClickListener.onItemClick(mDog, view);
             }
         };

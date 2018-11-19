@@ -1,11 +1,11 @@
 package laboratorywork.model;
 
 
-public class Dog {
+public class DogModel {
     private static int mCounter = 0;
     private String mImageUrl;
 
-    public Dog(String imageURL) {
+    public DogModel(String imageURL) {
         this.mImageUrl = imageURL;
         mCounter++;
     }

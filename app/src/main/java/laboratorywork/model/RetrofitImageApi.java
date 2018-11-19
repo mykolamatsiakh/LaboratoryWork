@@ -1,4 +1,4 @@
-package laboratorywork.api;
+package laboratorywork.model;
 
 import laboratorywork.model.ResponseModel;
 import retrofit2.Call;
