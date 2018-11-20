@@ -28,7 +28,6 @@ public class DogAdapter extends RecyclerView.Adapter<DogAdapter.ViewHolder> {
         void onItemClick(DogModel dogsURL, View view);
     }
 
-
     public DogAdapter(Context context, List<DogModel> dogsURLs) {
         this.mDogsUrls = dogsURLs;
         this.mContext = context;

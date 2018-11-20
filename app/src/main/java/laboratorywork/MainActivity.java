@@ -18,7 +18,7 @@ public class MainActivity extends AppCompatActivity{
         findViewById(R.id.button_go_to_dogs).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startDogsActivity();
+               startActivity(new Intent(MainActivity.this, DogsActivity.class));
             }
         });
 
@@ -26,8 +26,4 @@ public class MainActivity extends AppCompatActivity{
     }
 
 
-    public void startDogsActivity() {
-        Intent startIntent = DogsActivity.getStartIntent(MainActivity.this);
-        startActivity(startIntent);
-    }
 }

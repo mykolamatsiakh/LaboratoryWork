@@ -80,7 +80,6 @@ public class DogsActivity extends AppCompatActivity implements DogListView  {
                 }
             };
 
-
     public void startImageViewerActivity(View view) {
         Intent startIntent = ImageViewerActivity.getStartIntent(DogsActivity.this,
                 LaboratoryWorkApplication.getDogModel().getImageUrl());

@@ -6,4 +6,5 @@ public interface ImageViewerModel {
         void setDog(String path);
     }
     void getDog();
+
 }
