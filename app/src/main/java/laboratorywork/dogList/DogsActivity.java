@@ -31,6 +31,7 @@ import laboratorywork.model.DogModel;
 public class DogsActivity extends AppCompatActivity implements DogListView  {
     private List<DogModel> mDogsImagesUrl = new ArrayList<>();
     private DogAdapter mDogAdapter;
+    private static final String EXTRA_IMAGE_PATH = "EXTRA_IMAGE_PATH";
 
     private DogListPresenter mDogListPresenter;
 
@@ -86,6 +87,7 @@ public class DogsActivity extends AppCompatActivity implements DogListView  {
         ActivityOptionsCompat activityOptionsCompat = ActivityOptionsCompat
                 .makeSceneTransitionAnimation(DogsActivity.this, view,
                         "transition");
+        startIntent.putExtra("IMAGE_PATH", EXTRA_IMAGE_PATH);
         startActivity(startIntent, activityOptionsCompat.toBundle());
     }
 
@@ -110,7 +112,7 @@ public class DogsActivity extends AppCompatActivity implements DogListView  {
         ArrayList<DogModel> dogsFavourites = new ArrayList<>();
         SharedPreferences prefs = PreferenceManager.
                 getDefaultSharedPreferences(DogsActivity.this);
-        String imagePath = prefs.getString(LaboratoryWorkApplication.getExtraImagePath(), "");
+        String imagePath = prefs.getString(EXTRA_IMAGE_PATH, "");
         String finalString = imagePath.substring(1, imagePath.length());
         String[] paths = finalString.split(Pattern.quote("&"));
         for (String path : paths) {

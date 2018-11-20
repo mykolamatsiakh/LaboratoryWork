@@ -10,12 +10,11 @@ import laboratorywork.model.RetrofitSingleton;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class LaboratoryWorkApplication extends Application{
-    private static final String EXTRA_IMAGE_PATH = "IMAGE_PATH";
+public class LaboratoryWorkApplication extends Application {
     private static RetrofitImageApi mRetrofitImageApi;
     private static DogModel mDogModel;
 
-    public static RetrofitImageApi getImageApi(){
+    public static RetrofitImageApi getImageApi() {
         return mRetrofitImageApi;
     }
 
@@ -34,12 +33,8 @@ public class LaboratoryWorkApplication extends Application{
         initRetrofit();
     }
 
-    public static String getExtraImagePath() {
-        return EXTRA_IMAGE_PATH;
-    }
-
     private void initRetrofit() {
         mRetrofitImageApi = RetrofitSingleton.getInstance().getUserService();
 
     }
-    }
+}

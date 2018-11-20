@@ -14,11 +14,14 @@ import android.widget.Button;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
+import java.util.Objects;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import iot.nulp.com.laboratorywork.R;
 import laboratorywork.LaboratoryWorkApplication;
 import laboratorywork.view.TouchImageView;
+import retrofit2.http.PATCH;
 
 public class ImageViewerActivity extends AppCompatActivity implements ImageViewerView
         {
@@ -31,7 +34,7 @@ public class ImageViewerActivity extends AppCompatActivity implements ImageViewe
 
     public static Intent getStartIntent(Context context, String path) {
         Intent intent = new Intent(context, ImageViewerActivity.class);
-        intent.putExtra(LaboratoryWorkApplication.getExtraImagePath(), path);
+        intent.putExtra("IMAGE_PATH", path);
         return intent;
     }
 
@@ -55,7 +58,8 @@ public class ImageViewerActivity extends AppCompatActivity implements ImageViewe
             }
         });
         ActivityCompat.postponeEnterTransition(ImageViewerActivity.this);
-        loadImage(getIntent().getStringExtra(LaboratoryWorkApplication.getExtraImagePath()));
+        String path = getIntent().getExtras().getParcelable("IMAGE_PATH");
+        loadImage(path);
     }
 
 
@@ -78,14 +82,14 @@ public class ImageViewerActivity extends AppCompatActivity implements ImageViewe
     }
 
     public void addImagePathToPreferences() {
-        String path = getIntent().getStringExtra(LaboratoryWorkApplication.getExtraImagePath());
+        String pathKey = Objects.requireNonNull(getIntent().getExtras()).getParcelable("IMAGE_PATH");
         SharedPreferences prefs = PreferenceManager.
                 getDefaultSharedPreferences(ImageViewerActivity.this);
-        String imagePath = prefs.getString(LaboratoryWorkApplication.getExtraImagePath(), "");
+        String imagePath = prefs.getString(pathKey, "");
 
         Editor prefEditor = PreferenceManager.
                 getDefaultSharedPreferences(ImageViewerActivity.this).edit();
-        prefEditor.putString(LaboratoryWorkApplication.getExtraImagePath(), imagePath+"&"+ path);
+        prefEditor.putString(pathKey, imagePath+"&"+ pathKey);
         prefEditor.apply();
     }
 
