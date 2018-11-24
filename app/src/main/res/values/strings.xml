@@ -17,5 +17,5 @@
     <string name="there_is_no_internet">There is no internet connection</string>
 
     <string name="add_to_favourite">Add to favourite</string>
-    <string name="go_to_dogs">Go to dogs list</string>
+    <string name="go_to_dogs">View dogs</string>
 </resources>

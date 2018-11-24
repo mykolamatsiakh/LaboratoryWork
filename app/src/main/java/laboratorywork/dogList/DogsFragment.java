@@ -1,13 +1,10 @@
 package laboratorywork.dogList;
 
-import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.v4.app.ActivityOptionsCompat;
+import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
@@ -17,7 +14,9 @@ import java.util.regex.Pattern;
 
 import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
 import android.support.v7.widget.Toolbar;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Toast;
 
 import butterknife.BindColor;
@@ -25,13 +24,14 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import iot.nulp.com.laboratorywork.R;
 import laboratorywork.LaboratoryWorkApplication;
-import laboratorywork.preview.ImageViewerActivity;
 import laboratorywork.model.DogModel;
+import laboratorywork.preview.ImageViewerFragment;
 
-public class DogsActivity extends AppCompatActivity implements DogListView  {
+public class DogsFragment extends Fragment implements DogListView  {
     private List<DogModel> mDogsImagesUrl = new ArrayList<>();
     private DogAdapter mDogAdapter;
     private static final String EXTRA_IMAGE_PATH = "EXTRA_IMAGE_PATH";
+    LaboratoryWorkApplication laboratoryWorkApplication;
 
     private DogListPresenter mDogListPresenter;
 
@@ -50,16 +50,12 @@ public class DogsActivity extends AppCompatActivity implements DogListView  {
     @BindColor(R.color.colorPrimary)
     int mRedLight;
 
-    public static Intent getStartIntent(Context context) {
-        Intent intent = new Intent(context, DogsActivity.class);
-        return intent;
-    }
-
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_fourth_lab);
-        ButterKnife.bind(this);
+        super.onCreate(savedInstanceState);
+        View view = inflater.inflate(R.layout.activity_fourth_lab, container, false);
+        ButterKnife.bind(this, view);
         mDogListPresenter = new DogListPresenterI(this);
         mDogListPresenter.getDogsFromServer(false);
         initView();
@@ -70,26 +66,23 @@ public class DogsActivity extends AppCompatActivity implements DogListView  {
             }
         });
 
-
+        return view;
     }
 
     final DogAdapter.OnItemClickListener mOnItemClickListener =
             new DogAdapter.OnItemClickListener() {
                 @Override
                 public void onItemClick(DogModel dog, View view) {
-                    startImageViewerActivity(view);
+                    Bundle bundle=new Bundle();
+                    bundle.putString("IMAGE_PATH", dog.getImageUrl());
+                    ImageViewerFragment imageViewerActivity = new ImageViewerFragment();
+                    imageViewerActivity.setArguments(bundle);
+                    setDogsFragment(new ImageViewerFragment());
+
                 }
             };
 
-    public void startImageViewerActivity(View view) {
-        Intent startIntent = ImageViewerActivity.getStartIntent(DogsActivity.this,
-                LaboratoryWorkApplication.getDogModel().getImageUrl());
-        ActivityOptionsCompat activityOptionsCompat = ActivityOptionsCompat
-                .makeSceneTransitionAnimation(DogsActivity.this, view,
-                        "transition");
-        startIntent.putExtra("IMAGE_PATH", EXTRA_IMAGE_PATH);
-        startActivity(startIntent, activityOptionsCompat.toBundle());
-    }
+
 
     public void initView() {
         mSwipeLayout.setOnRefreshListener(new OnRefreshListener() {
@@ -111,7 +104,7 @@ public class DogsActivity extends AppCompatActivity implements DogListView  {
         mDogsImagesUrl.clear();
         ArrayList<DogModel> dogsFavourites = new ArrayList<>();
         SharedPreferences prefs = PreferenceManager.
-                getDefaultSharedPreferences(DogsActivity.this);
+                getDefaultSharedPreferences(getActivity());
         String imagePath = prefs.getString(EXTRA_IMAGE_PATH, "");
         String finalString = imagePath.substring(1, imagePath.length());
         String[] paths = finalString.split(Pattern.quote("&"));
@@ -121,12 +114,20 @@ public class DogsActivity extends AppCompatActivity implements DogListView  {
         }
     }
 
+    private void setDogsFragment(Fragment fragment){
+        getActivity().getSupportFragmentManager().
+                beginTransaction()
+                .replace(R.id.container, fragment)
+                .addToBackStack(null)
+                .commit();
+    }
+
     @Override
     public void setAdapterData(List<DogModel> dogimagesUrl) {
-        mDogAdapter = new DogAdapter(DogsActivity.this, dogimagesUrl);
+        mDogAdapter = new DogAdapter(getActivity(), dogimagesUrl);
         mRecyclerView.setAdapter(mDogAdapter);
         mDogAdapter.setOnItemClickListener(mOnItemClickListener);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
     }
 
     @Override
@@ -138,7 +139,7 @@ public class DogsActivity extends AppCompatActivity implements DogListView  {
 
     @Override
     public void onFailureResponse(Throwable throwable) {
-        Toast.makeText(this, "Response failed", Toast.LENGTH_LONG).show();
+        Toast.makeText(getActivity(), "Response failed", Toast.LENGTH_LONG).show();
     }
 
 }

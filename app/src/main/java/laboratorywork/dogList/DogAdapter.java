@@ -15,7 +15,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import iot.nulp.com.laboratorywork.R;
-import laboratorywork.LaboratoryWorkApplication;
+import laboratorywork.MainActivity;
 import laboratorywork.model.DogModel;
 
 
@@ -53,12 +53,6 @@ public class DogAdapter extends RecyclerView.Adapter<DogAdapter.ViewHolder> {
                 load(mDogsUrls.get(i).getImageUrl())
                 .into(viewHolder.mDogImage);
 
-        viewHolder.mDogImage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                LaboratoryWorkApplication.setDogModel(mDogsUrls.get(i));
-            }
-        });
     }
 
     @Override
@@ -69,7 +63,6 @@ public class DogAdapter extends RecyclerView.Adapter<DogAdapter.ViewHolder> {
     public void clear() {
         mDogsUrls.clear();
         notifyDataSetChanged();
-
     }
 
     public void addAll(List<DogModel> dogs){
