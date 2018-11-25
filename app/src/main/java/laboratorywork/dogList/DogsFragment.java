@@ -30,7 +30,6 @@ import laboratorywork.preview.ImageViewerFragment;
 
 public class DogsFragment extends Fragment implements DogListView {
     private List<DogModel> mDogsImagesUrl = new ArrayList<>();
-    private DogListModel mDogModel;
     private DogAdapter mDogAdapter;
     private static final String EXTRA_IMAGE_PATH = "EXTRA_IMAGE_PATH";
     private DogListPresenter mDogListPresenter;
@@ -56,8 +55,7 @@ public class DogsFragment extends Fragment implements DogListView {
         super.onCreate(savedInstanceState);
         View view = inflater.inflate(R.layout.activity_fourth_lab, container, false);
         ButterKnife.bind(this, view);
-        mDogModel = new DogListModelImpl();
-        mDogListPresenter = new DogListPresenterI(mDogModel, this);
+        setupPresenter();
         mDogListPresenter.getDogsFromServer(false);
         initView();
         mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -81,6 +79,10 @@ public class DogsFragment extends Fragment implements DogListView {
                     setDogsFragment(newFragment);
                 }
             };
+
+    private void setupPresenter(){
+        mDogListPresenter = new DogListPresenterI(new DogListModelImpl(), this);
+    }
 
 
     public void initView() {
