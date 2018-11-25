@@ -47,9 +47,9 @@ public class DogAdapter extends RecyclerView.Adapter<DogAdapter.ViewHolder> {
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder viewHolder, final int i) {
+    public void onBindViewHolder(@NonNull ViewHolder viewHolder, int i) {
         Picasso.with(viewHolder.mDogImage.getContext()).
-                load(mDogs.get(i).getImageUrl())
+                load(mDogs.get(viewHolder.getAdapterPosition()).getImageUrl())
                 .into(viewHolder.mDogImage);
         viewHolder.bindView(mDogs.get(i));
 
