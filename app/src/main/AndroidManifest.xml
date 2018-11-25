@@ -19,13 +19,6 @@
             </intent-filter>
         </activity>
 
-        <activity android:name="laboratorywork.dogList.DogsActivity"
-            android:screenOrientation="portrait"/>
-
-        <activity android:name="laboratorywork.preview.ImageViewerActivity"
-            android:screenOrientation="portrait"/>
-
-
     </application>
 
 </manifest>
