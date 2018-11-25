@@ -8,9 +8,9 @@ public class DogListPresenterI implements DogListPresenter, DogListModel.OnFinis
     private DogListView mDogListView;
     private DogListModel mDogModel;
 
-    public DogListPresenterI(DogListView dogListView){
-        this.mDogListView = dogListView;
-        this.mDogModel = new DogListModelImpl();
+    public DogListPresenterI(DogListModel dogModel, DogListView dogListView){
+        mDogListView = dogListView;
+        mDogModel = dogModel;
     }
 
 

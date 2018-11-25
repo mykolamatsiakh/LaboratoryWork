@@ -6,12 +6,17 @@ import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TabHost;
 
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
@@ -30,12 +35,7 @@ public class ImageViewerFragment extends Fragment implements ImageViewerView {
     @BindView(R.id.image_view)
     TouchImageView mTouchImageView;
     ImageViewerPresenter mImageViewerPresenter;
-
-    public static Intent getStartIntent(Context context, String path) {
-        Intent intent = new Intent(context, ImageViewerFragment.class);
-        intent.putExtra("IMAGE_PATH", path);
-        return intent;
-    }
+    private static final String EXTRA_IMAGE_PATH = "EXTRA_IMAGE_PATH";
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -50,11 +50,16 @@ public class ImageViewerFragment extends Fragment implements ImageViewerView {
             }
         });
         ActivityCompat.postponeEnterTransition(getActivity());
-        String path = getActivity().getIntent().getExtras().getParcelable("IMAGE_PATH");
-        loadImage(path);
+        Bundle bundle = getArguments();
+        String imagePath = bundle.getString(EXTRA_IMAGE_PATH);
+        loadImage(imagePath);
         return view;
     }
 
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+    }
 
     public void loadImage(String path) {
         Picasso.with(mTouchImageView.getContext())

@@ -14,6 +14,7 @@ import java.util.regex.Pattern;
 
 import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,12 +28,11 @@ import laboratorywork.LaboratoryWorkApplication;
 import laboratorywork.model.DogModel;
 import laboratorywork.preview.ImageViewerFragment;
 
-public class DogsFragment extends Fragment implements DogListView  {
+public class DogsFragment extends Fragment implements DogListView {
     private List<DogModel> mDogsImagesUrl = new ArrayList<>();
+    private DogListModel mDogModel;
     private DogAdapter mDogAdapter;
     private static final String EXTRA_IMAGE_PATH = "EXTRA_IMAGE_PATH";
-    LaboratoryWorkApplication laboratoryWorkApplication;
-
     private DogListPresenter mDogListPresenter;
 
     @BindView(R.id.toolbar_dogs)
@@ -56,7 +56,8 @@ public class DogsFragment extends Fragment implements DogListView  {
         super.onCreate(savedInstanceState);
         View view = inflater.inflate(R.layout.activity_fourth_lab, container, false);
         ButterKnife.bind(this, view);
-        mDogListPresenter = new DogListPresenterI(this);
+        mDogModel = new DogListModelImpl();
+        mDogListPresenter = new DogListPresenterI(mDogModel, this);
         mDogListPresenter.getDogsFromServer(false);
         initView();
         mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -73,15 +74,13 @@ public class DogsFragment extends Fragment implements DogListView  {
             new DogAdapter.OnItemClickListener() {
                 @Override
                 public void onItemClick(DogModel dog, View view) {
-                    Bundle bundle=new Bundle();
-                    bundle.putString("IMAGE_PATH", dog.getImageUrl());
-                    ImageViewerFragment imageViewerActivity = new ImageViewerFragment();
-                    imageViewerActivity.setArguments(bundle);
-                    setDogsFragment(new ImageViewerFragment());
-
+                    Bundle bundle = new Bundle();
+                    bundle.putString(EXTRA_IMAGE_PATH, dog.getImageUrl());
+                    ImageViewerFragment newFragment = new ImageViewerFragment();
+                    newFragment.setArguments(bundle);
+                    setDogsFragment(newFragment);
                 }
             };
-
 
 
     public void initView() {
@@ -114,7 +113,7 @@ public class DogsFragment extends Fragment implements DogListView  {
         }
     }
 
-    private void setDogsFragment(Fragment fragment){
+    private void setDogsFragment(Fragment fragment) {
         getActivity().getSupportFragmentManager().
                 beginTransaction()
                 .replace(R.id.container, fragment)
