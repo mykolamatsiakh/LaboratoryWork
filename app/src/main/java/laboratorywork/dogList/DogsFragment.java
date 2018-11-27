@@ -29,8 +29,7 @@ import laboratorywork.LaboratoryWorkApplication;
 import laboratorywork.model.DogModel;
 import laboratorywork.preview.ImageViewerFragment;
 
-public class DogsFragment extends Fragment implements DogListView {
-    private List<DogModel> mDogsImagesUrl = new ArrayList<>();
+public class DogsFragment extends Fragment implements DogListView{
     private DogAdapter mDogAdapter;
     private static final String EXTRA_IMAGE_PATH = "EXTRA_IMAGE_PATH";
     private DogListPresenter mDogListPresenter;
@@ -103,8 +102,7 @@ public class DogsFragment extends Fragment implements DogListView {
     }
 
     public void replaceOldListWithNewList() {
-        mDogsImagesUrl.clear();
-        ArrayList<DogModel> dogsFavourites = new ArrayList<>();
+        List<DogModel> dogsFavourites = new ArrayList<>();
         SharedPreferences prefs = PreferenceManager.
                 getDefaultSharedPreferences(getActivity());
         String imagePath = prefs.getString(EXTRA_IMAGE_PATH, "");
@@ -115,6 +113,7 @@ public class DogsFragment extends Fragment implements DogListView {
             parcel.writeString(path);
             DogModel favouriteDog = new DogModel(parcel);
             dogsFavourites.add(favouriteDog);
+            setAdapterData(dogsFavourites);
         }
     }
 
@@ -128,7 +127,7 @@ public class DogsFragment extends Fragment implements DogListView {
 
     @Override
     public void setAdapterData(List<DogModel> dogimagesUrl) {
-        mDogAdapter = new DogAdapter(getActivity(), dogimagesUrl);
+        mDogAdapter = new DogAdapter(dogimagesUrl);
         mRecyclerView.setAdapter(mDogAdapter);
         mDogAdapter.setOnItemClickListener(mOnItemClickListener);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));

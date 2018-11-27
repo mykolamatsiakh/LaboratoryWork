@@ -11,8 +11,4 @@ public class ImageViewerModelImp implements ImageViewerModel {
         mOnFinishedListener = onFinishedListener;
     }
 
-    @Override
-    public void getDog() {
-        mOnFinishedListener.setDog(laboratoryWorkApplication.getDogModel().getImageUrl());
-    }
 }

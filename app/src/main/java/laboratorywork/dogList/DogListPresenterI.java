@@ -25,6 +25,8 @@ public class DogListPresenterI implements DogListPresenter, DogListModel.OnFinis
         }
     }
 
+
+
     @Override
     public void onFailure(Throwable t) {
         mDogListView.onFailureResponse(t);

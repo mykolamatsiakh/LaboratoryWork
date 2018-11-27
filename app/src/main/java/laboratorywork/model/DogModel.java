@@ -6,11 +6,9 @@ import android.os.Parcelable;
 
 public class DogModel implements Parcelable{
     private String mImageUrl;
-    private int mCounter;
 
     public DogModel(Parcel in) {
         mImageUrl = in.readString();
-        mCounter++;
     }
 
     @Override
