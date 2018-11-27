@@ -5,10 +5,14 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 public class DogModel implements Parcelable{
-    private String mImageUrl;
+    public final String imageUrl;
 
     public DogModel(Parcel in) {
-        mImageUrl = in.readString();
+        imageUrl = in.readString();
+    }
+
+    public DogModel(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 
     @Override
@@ -18,7 +22,7 @@ public class DogModel implements Parcelable{
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(mImageUrl);
+        dest.writeString(imageUrl);
     }
 
     public static final Creator<DogModel> CREATOR = new Creator<DogModel>() {
@@ -32,9 +36,5 @@ public class DogModel implements Parcelable{
             return new DogModel[size];
         }
     };
-
-    public String getImageUrl() {
-        return mImageUrl;
-    }
 
 }

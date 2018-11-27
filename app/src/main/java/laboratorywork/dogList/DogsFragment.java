@@ -15,7 +15,6 @@ import java.util.regex.Pattern;
 
 import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,7 +24,6 @@ import butterknife.BindColor;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import iot.nulp.com.laboratorywork.R;
-import laboratorywork.LaboratoryWorkApplication;
 import laboratorywork.model.DogModel;
 import laboratorywork.preview.ImageViewerFragment;
 
@@ -52,7 +50,6 @@ public class DogsFragment extends Fragment implements DogListView{
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        super.onCreate(savedInstanceState);
         View view = inflater.inflate(R.layout.activity_fourth_lab, container, false);
         ButterKnife.bind(this, view);
         setupPresenter();
@@ -72,7 +69,7 @@ public class DogsFragment extends Fragment implements DogListView{
                 @Override
                 public void onItemClick(DogModel dog, View view) {
                     Bundle bundle = new Bundle();
-                    bundle.putString(EXTRA_IMAGE_PATH, dog.getImageUrl());
+                    bundle.putString(EXTRA_IMAGE_PATH, dog.imageUrl);
                     ImageViewerFragment newFragment = new ImageViewerFragment();
                     newFragment.setArguments(bundle);
                     setDogsFragment(newFragment);
