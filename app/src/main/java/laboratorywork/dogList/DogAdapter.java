@@ -58,7 +58,7 @@ public class DogAdapter extends RecyclerView.Adapter<DogAdapter.ViewHolder> {
 
     @Override
     public int getItemCount() {
-        return DogModel.getCounter();
+        return 0;
     }
 
     public void clear() {

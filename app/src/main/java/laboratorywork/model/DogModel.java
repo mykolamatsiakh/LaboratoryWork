@@ -1,23 +1,42 @@
 package laboratorywork.model;
 
 
-public class DogModel {
-    private static int mCounter = 0;
-    private String mImageUrl;
+import android.os.Parcel;
+import android.os.Parcelable;
 
-    public DogModel(String imageURL) {
-        this.mImageUrl = imageURL;
+public class DogModel implements Parcelable{
+    private String mImageUrl;
+    private int mCounter;
+
+    public DogModel(Parcel in) {
+        mImageUrl = in.readString();
         mCounter++;
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(mImageUrl);
+    }
+
+    public static final Creator<DogModel> CREATOR = new Creator<DogModel>() {
+        @Override
+        public DogModel createFromParcel(Parcel in) {
+            return new DogModel(in);
+        }
+
+        @Override
+        public DogModel[] newArray(int size) {
+            return new DogModel[size];
+        }
+    };
 
     public String getImageUrl() {
         return mImageUrl;
     }
-
-
-    public static int getCounter() {
-        return mCounter;
-    }
-
 
 }

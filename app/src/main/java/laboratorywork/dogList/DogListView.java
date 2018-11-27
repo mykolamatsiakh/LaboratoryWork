@@ -11,5 +11,4 @@ public interface DogListView {
     void refreshData(List<DogModel> dogimagesUrl);
 
     void onFailureResponse(Throwable throwable);
-
 }

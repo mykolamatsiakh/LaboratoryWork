@@ -12,19 +12,15 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class LaboratoryWorkApplication extends Application {
     private static RetrofitImageApi mRetrofitImageApi;
-    private static DogModel mDogModel;
+    private DogModel mDogModel;
 
     public static RetrofitImageApi getImageApi() {
         return mRetrofitImageApi;
     }
 
 
-    public static DogModel getDogModel() {
+    public  DogModel getDogModel() {
         return mDogModel;
-    }
-
-    public static void setDogModel(DogModel mDogModel) {
-        LaboratoryWorkApplication.mDogModel = mDogModel;
     }
 
     @Override

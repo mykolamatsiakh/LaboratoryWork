@@ -52,6 +52,7 @@ public class ImageViewerFragment extends Fragment implements ImageViewerView {
         ActivityCompat.postponeEnterTransition(getActivity());
         Bundle bundle = getArguments();
         String imagePath = bundle.getString(EXTRA_IMAGE_PATH);
+        Log.e("IMAGE", imagePath);
         loadImage(imagePath);
         return view;
     }

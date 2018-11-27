@@ -2,6 +2,7 @@ package laboratorywork.dogList;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Parcel;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -110,7 +111,9 @@ public class DogsFragment extends Fragment implements DogListView {
         String finalString = imagePath.substring(1, imagePath.length());
         String[] paths = finalString.split(Pattern.quote("&"));
         for (String path : paths) {
-            DogModel favouriteDog = new DogModel(path);
+            Parcel parcel = Parcel.obtain();
+            parcel.writeString(path);
+            DogModel favouriteDog = new DogModel(parcel);
             dogsFavourites.add(favouriteDog);
         }
     }
