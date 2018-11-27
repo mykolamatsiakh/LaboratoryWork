@@ -56,7 +56,6 @@ public class DogsFragment extends Fragment implements DogListView{
         View view = inflater.inflate(R.layout.activity_fourth_lab, container, false);
         ButterKnife.bind(this, view);
         setupPresenter();
-        mDogListPresenter.getDogsFromServer(false);
         initView();
         mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override

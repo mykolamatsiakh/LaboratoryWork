@@ -13,6 +13,10 @@ public class DogListPresenterI implements DogListPresenter, DogListModel.OnFinis
         mDogModel = dogModel;
     }
 
+    @Override
+    public void onCreate() {
+        getDogsFromServer(true);
+    }
 
     @Override
     public void onFinished(List<DogModel> dogsList, boolean isChange) {
@@ -36,4 +40,6 @@ public class DogListPresenterI implements DogListPresenter, DogListModel.OnFinis
     public void getDogsFromServer(boolean isChange) {
         mDogModel.getDogsList(this, isChange);
     }
+
+
 }

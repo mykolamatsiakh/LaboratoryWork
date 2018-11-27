@@ -84,7 +84,6 @@ public class DogAdapter extends RecyclerView.Adapter<DogAdapter.ViewHolder> {
                 }
             });
         }
-
     }
 }
 
