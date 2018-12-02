@@ -15,7 +15,7 @@ public class DogListPresenterI implements DogListPresenter, DogListModel.OnFinis
 
     @Override
     public void onCreate() {
-        getDogsFromServer(true);
+        getDogsFromServer(false);
     }
 
     @Override

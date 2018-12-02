@@ -9,6 +9,7 @@ import android.view.View.OnClickListener;
 
 import iot.nulp.com.laboratorywork.R;
 import laboratorywork.dogList.DogsFragment;
+import laboratorywork.timer.TimerFragment;
 
 
 public class MainActivity extends FragmentActivity{
@@ -19,12 +20,13 @@ public class MainActivity extends FragmentActivity{
         findViewById(R.id.button_go_to_dogs).setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                setDogsFragment(new DogsFragment());
+                setTimerFragment(new TimerFragment());
+                findViewById(R.id.button_go_to_dogs).setVisibility(View.INVISIBLE);
             }
         });
     }
 
-    private void setDogsFragment(Fragment fragment){
+    private void setTimerFragment(Fragment fragment){
         getSupportFragmentManager().
                 beginTransaction()
                 .replace(R.id.container, fragment)

@@ -47,6 +47,7 @@ public class DogsFragment extends Fragment implements DogListView{
     @BindColor(R.color.colorPrimary)
     int mRedLight;
 
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -78,6 +79,7 @@ public class DogsFragment extends Fragment implements DogListView{
 
     private void setupPresenter(){
         mDogListPresenter = new DogListPresenterI(new DogListModelImpl(), this);
+        mDogListPresenter.onCreate();
     }
 
 
@@ -123,7 +125,7 @@ public class DogsFragment extends Fragment implements DogListView{
 
     @Override
     public void setAdapterData(List<DogModel> dogimagesUrl) {
-        mDogAdapter = new DogAdapter(dogimagesUrl);
+        mDogAdapter = new DogAdapter(getActivity(), dogimagesUrl);
         mRecyclerView.setAdapter(mDogAdapter);
         mDogAdapter.setOnItemClickListener(mOnItemClickListener);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));

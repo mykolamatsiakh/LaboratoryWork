@@ -1,7 +1,9 @@
 package laboratorywork.dogList;
 
+import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,14 +22,15 @@ import laboratorywork.model.DogModel;
 public class DogAdapter extends RecyclerView.Adapter<DogAdapter.ViewHolder> {
     private List<DogModel> mDogs;
     private OnItemClickListener mOnItemClickListener;
+    Context mContext;
 
     public interface OnItemClickListener {
         void onItemClick(DogModel dogsURL, View view);
     }
 
-    public DogAdapter(List<DogModel> dogs) {
+    public DogAdapter(Context context,List<DogModel> dogs) {
         this.mDogs = dogs;
-
+        this.mContext = context;
     }
 
     public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
@@ -49,13 +52,12 @@ public class DogAdapter extends RecyclerView.Adapter<DogAdapter.ViewHolder> {
                 load(mDogs.get(viewHolder.getAdapterPosition()).imageUrl)
                 .into(viewHolder.mDogImage);
         viewHolder.bindView(mDogs.get(i));
-
     }
 
 
     @Override
     public int getItemCount() {
-        return 0;
+        return mDogs.size();
     }
 
     public void clear() {
