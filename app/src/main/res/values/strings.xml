@@ -15,4 +15,12 @@
     <string name="contacts">Контакти</string>
 
     <string name="there_is_no_internet">There is no internet connection</string>
+
+    <string name="add_to_favourite">Add to favourite</string>
+    <string name="go_to_dogs">View dogs</string>
+
+    <!---->
+    <string name="hint_minute">Minute</string>
+    <string name="message_minutes">Please Enter Minutes...</string>
+
 </resources>
