@@ -1,4 +1,4 @@
-package laboratorywork.api;
+package laboratorywork.model;
 
 
 import retrofit2.Retrofit;
@@ -8,7 +8,7 @@ public class RetrofitSingleton {
     private static RetrofitSingleton instance = null;
     private static final String BASE_URL = "https://dog.ceo/api/";
 
-    private RetrofitImageApi userService;
+    private RetrofitImageApi mUserService;
 
     public static RetrofitSingleton getInstance() {
         if (instance == null) {
@@ -28,11 +28,11 @@ public class RetrofitSingleton {
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
-        this.userService = retrofit.create(RetrofitImageApi.class);
+        this.mUserService = retrofit.create(RetrofitImageApi.class);
 
     }
 
     public RetrofitImageApi getUserService() {
-        return this.userService;
+        return this.mUserService;
     }
 }
