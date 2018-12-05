@@ -1,8 +1,4 @@
-package laboratorywork.dogList;
-
-import android.os.Parcel;
-import android.os.Parcelable;
-import android.util.Log;
+package laboratorywork.timer;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,11 +10,11 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class DogListModelImpl implements DogListModel{
+public class TimerModelImpl implements TimerModel{
     private List<DogModel> mDogsImagesUrl = new ArrayList<>();
 
     @Override
-    public void getDogsList(final OnFinishedListener onFinishedListener,final boolean isChange) {
+    public void requestDataFromServer(final Result result) {
         Call<ResponseModel> call = LaboratoryWorkApplication.getImageApi().getImages();
         call.enqueue(new Callback<ResponseModel>() {
             @Override
@@ -28,15 +24,14 @@ public class DogListModelImpl implements DogListModel{
                         DogModel dog = new DogModel(response.body().getMessage().get(counter));
                         mDogsImagesUrl.add(dog);
                     }
+                    result.onSuccess(mDogsImagesUrl);
                 }
-                onFinishedListener.onFinished(mDogsImagesUrl, isChange);
-    }
+            }
 
             @Override
             public void onFailure(Call<ResponseModel> call, Throwable t) {
-                onFinishedListener.onFailure(t);
+                result.onFailure(t);
             }
         });
     }
-
 }

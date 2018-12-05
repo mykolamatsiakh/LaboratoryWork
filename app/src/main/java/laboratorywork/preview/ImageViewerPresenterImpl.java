@@ -15,8 +15,4 @@ public class ImageViewerPresenterImpl implements ImageViewerPresenter,
         mImageViewerView.setDog(path);
     }
 
-    @Override
-    public void getDog() {
-        mImageViewModel.getDog();
-    }
 }

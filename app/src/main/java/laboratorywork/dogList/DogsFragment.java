@@ -2,6 +2,7 @@ package laboratorywork.dogList;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Parcel;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -14,7 +15,6 @@ import java.util.regex.Pattern;
 
 import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,12 +24,10 @@ import butterknife.BindColor;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import iot.nulp.com.laboratorywork.R;
-import laboratorywork.LaboratoryWorkApplication;
 import laboratorywork.model.DogModel;
 import laboratorywork.preview.ImageViewerFragment;
 
-public class DogsFragment extends Fragment implements DogListView {
-    private List<DogModel> mDogsImagesUrl = new ArrayList<>();
+public class DogsFragment extends Fragment implements DogListView{
     private DogAdapter mDogAdapter;
     private static final String EXTRA_IMAGE_PATH = "EXTRA_IMAGE_PATH";
     private DogListPresenter mDogListPresenter;
@@ -49,14 +47,13 @@ public class DogsFragment extends Fragment implements DogListView {
     @BindColor(R.color.colorPrimary)
     int mRedLight;
 
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
         super.onCreate(savedInstanceState);
         View view = inflater.inflate(R.layout.activity_fourth_lab, container, false);
         ButterKnife.bind(this, view);
         setupPresenter();
-        mDogListPresenter.getDogsFromServer(false);
         initView();
         mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
@@ -73,7 +70,7 @@ public class DogsFragment extends Fragment implements DogListView {
                 @Override
                 public void onItemClick(DogModel dog, View view) {
                     Bundle bundle = new Bundle();
-                    bundle.putString(EXTRA_IMAGE_PATH, dog.getImageUrl());
+                    bundle.putString(EXTRA_IMAGE_PATH, dog.imageUrl);
                     ImageViewerFragment newFragment = new ImageViewerFragment();
                     newFragment.setArguments(bundle);
                     setDogsFragment(newFragment);
@@ -82,6 +79,7 @@ public class DogsFragment extends Fragment implements DogListView {
 
     private void setupPresenter(){
         mDogListPresenter = new DogListPresenterI(new DogListModelImpl(), this);
+        mDogListPresenter.onCreate();
     }
 
 
@@ -102,16 +100,18 @@ public class DogsFragment extends Fragment implements DogListView {
     }
 
     public void replaceOldListWithNewList() {
-        mDogsImagesUrl.clear();
-        ArrayList<DogModel> dogsFavourites = new ArrayList<>();
+        List<DogModel> dogsFavourites = new ArrayList<>();
         SharedPreferences prefs = PreferenceManager.
                 getDefaultSharedPreferences(getActivity());
         String imagePath = prefs.getString(EXTRA_IMAGE_PATH, "");
         String finalString = imagePath.substring(1, imagePath.length());
         String[] paths = finalString.split(Pattern.quote("&"));
         for (String path : paths) {
-            DogModel favouriteDog = new DogModel(path);
+            Parcel parcel = Parcel.obtain();
+            parcel.writeString(path);
+            DogModel favouriteDog = new DogModel(parcel);
             dogsFavourites.add(favouriteDog);
+            setAdapterData(dogsFavourites);
         }
     }
 

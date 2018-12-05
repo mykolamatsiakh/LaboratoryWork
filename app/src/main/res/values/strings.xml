@@ -18,4 +18,9 @@
 
     <string name="add_to_favourite">Add to favourite</string>
     <string name="go_to_dogs">View dogs</string>
+
+    <!---->
+    <string name="hint_minute">Minute</string>
+    <string name="message_minutes">Please Enter Minutes...</string>
+
 </resources>
